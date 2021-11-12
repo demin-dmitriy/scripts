@@ -1,0 +1,59 @@
+#!/usr/bin/env bash
+
+function process()
+{
+	gawk \
+	'
+		BEGIN {
+			greyColor = "\033[90m"
+			defaultColor = "\033[39m"
+			blueColor = "\033[94m"
+		}
+
+		match($0, "^--- a/(.*)$", groups) {
+			leftFile = groups[1]
+			next
+		}
+
+		match($0, "^+++ b/(.*)$", groups) {
+			rightFile = groups[1]
+			next
+		}
+
+		match($0, "^@@ -([0-9]+),[0-9]+ [+]([0-9]+),[0-9]+ @@", groups) {
+			leftCount = groups[1]
+			rightCount = groups[2]
+			next
+		}
+
+		match($0, "^[+][[:space:]]*(.*)([tT][oO][dD][oO])(.*)$", groups) {
+			lineBefore = groups[1]
+			todo = blueColor groups[2] defaultColor
+			lineAfter = groups[3]
+			filename = greyColor rightFile "(" rightCount "): " defaultColor
+
+			print filename lineBefore todo lineAfter
+			todoCount++
+		}
+
+		/^[ -]/ {
+			leftCount++
+		}
+
+		/^[ +]/ {
+			rightCount++
+		}
+
+		END {
+			print "Total TODO count: " todoCount
+		}
+	'
+}
+
+function generateDiff()
+{
+	git --no-pager diff
+	git --no-pager diff --cached origin/master
+}
+
+generateDiff | process
