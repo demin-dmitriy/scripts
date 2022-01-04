@@ -13,6 +13,11 @@ try:
 except ModuleNotFoundError as e:
     pass
 
+try:
+    import scipy; from scipy.special import binom, factorial, comb, perm
+except ModuleNotFoundError as e:
+    pass
+
 import random; from random import *
 import math; from math import *
 import statistics; from statistics import *
