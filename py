@@ -34,7 +34,7 @@ except ModuleNotFoundError as e:
 
 # Generic
 import itertools; from itertools import *
-import functools; from functools import reduce, partial, partialmethod, singledispatch
+import functools; from functools import reduce, partial, partialmethod, singledispatch, cache
 import collections; from collections import *
 import pickle
 
@@ -44,6 +44,14 @@ import sys
 import os
 import time; from time import sleep
 from pathlib import Path
+
+# Misc
+try :
+    from forex_python.converter import CurrencyRates
+    usd = cache(lambda dest_currency='RUB': CurrencyRates().get_rate('USD', dest_currency))
+    eur = cache(lambda dest_currency='RUB': CurrencyRates().get_rate('EUR', dest_currency))
+except ModuleNotFoundError as e:
+    pass
 
 HOME = Path('~').expanduser()
 
