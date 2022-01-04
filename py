@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
     # --matplotlib=tk \
-exec ipython3 \
+exec python3 -mIPython \
     --no-confirm-exit \
     --no-banner \
     --nosep \
