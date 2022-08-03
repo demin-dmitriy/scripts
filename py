@@ -56,4 +56,8 @@ except ModuleNotFoundError as e:
 HOME = Path('~').expanduser()
 
 segment = lambda a, b: range(a, b + 1)
+
+# This does not handle quotations correctly, but should do the job in many scenarioses
+if '$@':
+    %run $@
 "
